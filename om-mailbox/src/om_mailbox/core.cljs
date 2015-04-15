@@ -30,6 +30,19 @@
         (dom/td nil (:from data))
         (dom/td nil (:to data))))))
 
+(defn email-list-view [data owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/table #js {:className "email-list table table-striped table-condensed"}
+        (dom/thead nil
+          (dom/tr nil
+            (dom/th nil "Subject")
+            (dom/th nil "From")
+            (dom/th nil "To")))
+        (dom/tbody nil
+          (om/build-all email-list-item-view (:emails data)))))))
+
 
 ;;; Applicaion fixtures
 
