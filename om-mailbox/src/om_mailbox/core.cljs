@@ -21,6 +21,12 @@
         (dom/div #js {:className "body"
                       :dangerouslySetInnerHTML {:__html (:body data)}})))))
 
+(defn email-list-view [data owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/tr #js {:onClick (fn [e] ((:on-click data)))}))))
+
 ;;; Applicaion fixtures
 
 (defonce app-state
