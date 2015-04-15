@@ -21,11 +21,15 @@
         (dom/div #js {:className "body"
                       :dangerouslySetInnerHTML {:__html (:body data)}})))))
 
-(defn email-list-view [data owner]
+(defn email-list-item-view [data owner]
   (reify
     om/IRender
     (render [this]
-      (dom/tr #js {:onClick (fn [e] ((:on-click data)))}))))
+      (dom/tr #js {:onClick (fn [e] ((:on-click data)))}
+        (dom/td nil (:subject data))
+        (dom/td nil (:from data))
+        (dom/td nil (:to data))))))
+
 
 ;;; Applicaion fixtures
 
