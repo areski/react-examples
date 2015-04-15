@@ -2,6 +2,25 @@
     (:require [om.core :as om :include-macros true]
               [om.dom :as dom :include-macros true]))
 
+;;; Components
+
+(defn email-view [data owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/div #js {:className "email"}
+        (dom/dl #js {:className "meta dl-horizontal"}
+          (dom/dt nil "From")
+          (dom/dl nil (:from data))
+
+          (dom/dt nil "To")
+          (dom/dl nil (:to data))
+
+          (dom/dt nil "Subject")
+          (dom/dl nil (:subject data)))
+        (dom/div #js {:className "body"
+                      :dangerouslySetInnerHTML {:__html (:body data)}})))))
+
 ;;; Applicaion fixtures
 
 (defonce app-state
