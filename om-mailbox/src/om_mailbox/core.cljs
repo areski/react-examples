@@ -60,9 +60,29 @@
         (dom/div nil
           (email-list-view (:emails data))
           (dom/div #js {:className "email-viewer"}
-            (email-view email)))))))
+            (email-view email this)))))))
 
-;;; Applicaion fixtures
+(defn app-view [data owner]
+  (reify
+    om/IInitState
+    (init-state [_]
+      {:mailbox 1})
+
+    om/IRender
+    (render [this]
+      (let [mailbox-id (om/get-state owner :mailbox)
+            mailbox (if mailbox-id
+                      (first (filter (fn [mailbox)
+                                       (= (:id mailbox) mailbox-id))
+                                     (:mailboxes data)))
+                      {})]
+        (dom/div #js {:className "app row"}
+          (dom/div #js {:className "mailbox col-md-10"}
+            (dom/div #js {:className "panel panel-default"}
+              (dom/div #js {:className "panel-body"}
+                (mailbox-view mailbox this)))))))))
+
+;;; Application fixtures
 
 (defonce app-state
   (atom {:mailboxes
@@ -104,6 +124,6 @@
   (fn [data owner]
     (reify om/IRender
       (render [_]
-        (dom/h1 nil (:text data)))))
+        (app-view app-state))))
   app-state
   {:target (. js/document (getElementById "app"))})
