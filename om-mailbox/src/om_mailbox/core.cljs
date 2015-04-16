@@ -43,6 +43,24 @@
         (dom/tbody nil
           (om/build-all email-list-item-view (:emails data)))))))
 
+(defn mailbox-view [data owner]
+  (reify
+    om/IInitState
+    (init-state [_]
+      {:email nil})
+
+    om/IRender
+    (render [this]
+      (let [email-id (om/get-state owner :email)
+            email (if email-id
+                    (first (filter (fn [email)
+                                     (= (:id email) email-id))
+                                   (:emails data)))
+                    {})]
+        (dom/div nil
+          (email-list-view (:emails data))
+          (dom/div #js {:className "email-viewer"}
+            (email-view email)))))))
 
 ;;; Applicaion fixtures
 
